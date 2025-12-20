@@ -21,8 +21,27 @@ const SmoothScroll = ({ children }) => {
 
     requestAnimationFrame(raf);
 
+    const handleAnchorClick = (e) => {
+      const anchor = e.target.closest('a');
+      if (anchor && anchor.getAttribute('href')?.startsWith('#')) {
+        e.preventDefault();
+        const id = anchor.getAttribute('href');
+        if (id === '#') {
+          lenis.scrollTo(0);
+        } else {
+          const element = document.querySelector(id);
+          if (element) {
+            lenis.scrollTo(element);
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+
     return () => {
       lenis.destroy();
+      document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
 
